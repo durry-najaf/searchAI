@@ -1,8 +1,8 @@
 # backend/main.py
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
-from backend.scraper import scrape_website_parallel
-from backend.embeddings import get_embedding, search_website, index_website, generate_ai_article
+from scraper import scrape_website_parallel
+from embeddings import get_embedding, search_website, index_website, generate_ai_article
 import os
 
 app = FastAPI()
@@ -42,4 +42,5 @@ def generate_article(query: str = Query(..., min_length=1)):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
