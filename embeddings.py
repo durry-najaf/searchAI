@@ -12,11 +12,13 @@ dimension = 1536  # Embedding vector size
 index = faiss.IndexFlatL2(dimension)
 documents = []
 
-def get_embedding(text):
-    if not text:
-        return np.zeros((dimension,), dtype="float32")
-    response = client.embeddings.create(input=[text], model="text-embedding-ada-002")
-    return np.array(response.data[0].embedding)
+def get_embedding(text: str):
+    truncated = truncate_text(text)
+    response = client.embeddings.create(
+        input=[truncated],
+        model="text-embedding-ada-002"
+    )
+    return response.data[0].embedding
 
 def index_website(url, text):
     if not text:
@@ -68,4 +70,5 @@ def generate_ai_article(query):
         max_tokens=800
     )
     
+
     return response.choices[0].message.content.strip()
